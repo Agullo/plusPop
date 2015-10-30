@@ -1,9 +1,7 @@
+package core;
+
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
-import core.Usuario;
-import manager.Controller;
 
 public class UsuarioTest {
 
@@ -15,11 +13,5 @@ public class UsuarioTest {
 		} catch (Exception e) {
 			fail("Nao deve lancar exception");
 		}
-	}
-	
-	@Test
-	public void testaCadastroDeUsuario() {
-		Controller controller = new Controller();
-		
 	}
 }

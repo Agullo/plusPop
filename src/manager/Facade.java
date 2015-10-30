@@ -1,17 +1,19 @@
 package manager;
 
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+//import java.io.BufferedOutputStream;
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
 
 import exceptions.CadastroDeUsuarioException;
 import exceptions.FechaSistemaException;
+import exceptions.SenhaProtegidaException;
+import exceptions.UsuarioNaoCadastradoException;
 
 public class Facade {
-	private static final String CAMINHO_BACKUP = "backupSistema/sistemaPop";
+//	private static final String CAMINHO_BACKUP = "backupSistema/sistemaPop";
 	private Controller controller;
 	
 	public Facade() {
@@ -26,6 +28,10 @@ public class Facade {
 	public String cadastraUsuario(String nome, String email, String senha, String dataNasc)
 			throws CadastroDeUsuarioException {
 		return controller.cadastraUsuario(nome, email, senha, dataNasc, null);
+	}
+	
+	public String getInfoUsuario(String atributo, String usuario) throws UsuarioNaoCadastradoException, SenhaProtegidaException {
+		return controller.getInfoUsuario(atributo, usuario);
 	}
 
 	public void iniciaSistema() {

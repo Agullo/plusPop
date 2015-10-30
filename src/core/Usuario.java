@@ -6,6 +6,7 @@ import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 import exceptions.NomeUsuarioException;
+import exceptions.SenhaProtegidaException;
 import util.ValidaDadosDoUsuario;
 
 /**
@@ -68,6 +69,21 @@ public class Usuario {
 		if (isStringVazia(nome))
 			throw new NomeUsuarioException();
 		this.nome = nome;
+	}
+	
+	public String getInfo(String atributo) throws SenhaProtegidaException {
+		switch (atributo.toUpperCase()) {
+		case "NOME":
+			return this.nome;
+		case "DATA DE NASCIMENTO":
+			return this.dataNasc.toString();
+		case "FOTO":
+			return this.imagem;
+		case "SENHA":
+			throw new SenhaProtegidaException();
+		default:
+			return "Este atributo e invalido!";
+		}
 	}
 	
 	public String getEmail() {

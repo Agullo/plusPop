@@ -10,7 +10,9 @@ import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 import exceptions.NomeUsuarioException;
+import exceptions.SenhaProtegidaException;
 import exceptions.UsuarioJaCadastradoException;
+import exceptions.UsuarioNaoCadastradoException;
 
 public class Controller implements Serializable {
 	
@@ -25,13 +27,26 @@ public class Controller implements Serializable {
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem) throws CadastroDeUsuarioException {
 		try {
-			//isUsuarioJaCadastrado(email);  PROBLEMA NA IMPLEMENTACAO DO FOR??
+			isUsuarioJaCadastrado(email);
 			Usuario usuario = new Usuario(nome, email, senha, dataNasc, imagem);
 			usuariosDoMaisPop.add(usuario);
 			return usuario.getEmail();
-		} catch (NomeUsuarioException | EmailInvalidoException | FormatoDeDataInvalidoException | DataNaoExisteException e) { // UsuarioJaCadastradoException | 
+		} catch (UsuarioJaCadastradoException | NomeUsuarioException | EmailInvalidoException | FormatoDeDataInvalidoException | DataNaoExisteException e) { 
 			throw new CadastroDeUsuarioException(e);
 		}
+	}
+	
+	public String getInfoUsuario(String atributo, String email) throws UsuarioNaoCadastradoException, SenhaProtegidaException {
+		Usuario usuario = buscaUsuarioPorEmail(email);
+		return usuario.getInfo(atributo);
+	}
+	
+	private Usuario buscaUsuarioPorEmail(String email) throws UsuarioNaoCadastradoException {
+		for (Usuario usuario : usuariosDoMaisPop) {
+			if (usuario.getEmail().equals(email))
+				return usuario;
+		}
+		throw new UsuarioNaoCadastradoException(email);
 	}
 	
 	private void isUsuarioJaCadastrado(String email) throws UsuarioJaCadastradoException {
