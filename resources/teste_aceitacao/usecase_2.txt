@@ -21,7 +21,7 @@ expect "1972-09-17" getInfoUsuario atributo="Data de Nascimento"
 #Casos para tratamento de erros.
 expectError "Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio." atualizaPerfil atributo="Nome" valor=""
 expectError "Erro na atualizacao de perfil. Formato de e-mail esta invalido." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
-#####ESPERANDO AJEITAR A DATA######expectError "Erro na atualizacao de perfil. Formato de data esta invalida." atualizaPerfil atributo="Data de Nascimento" valor="01/04/199s"
+expectError "Erro na atualizacao de perfil. Formato de data esta invalida." atualizaPerfil atributo="Data de Nascimento" valor="01/04/199s"
 expectError "Erro na atualizacao de perfil. Data nao existe." atualizaPerfil atributo="Data de Nascimento" valor="29/02/2001"
 expectError "Erro na atualizacao de perfil. A senha fornecida esta incorreta." atualizaPerfil atributo="Senha" valor="fafa123" velhaSenha="will_S2"
 
