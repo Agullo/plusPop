@@ -9,6 +9,8 @@ package manager;
 
 import exceptions.CadastroDeUsuarioException;
 import exceptions.FechaSistemaException;
+import exceptions.LoginException;
+import exceptions.LogoutException;
 import exceptions.SenhaProtegidaException;
 import exceptions.UsuarioNaoCadastradoException;
 
@@ -30,8 +32,24 @@ public class Facade {
 		return controller.cadastraUsuario(nome, email, senha, dataNasc, null);
 	}
 	
+	public void login(String email, String senha) throws LoginException {
+		controller.login(email, senha);
+	}
+	
+	public void logout() throws LogoutException {
+		controller.logout();
+	}
+	
 	public String getInfoUsuario(String atributo, String usuario) throws UsuarioNaoCadastradoException, SenhaProtegidaException {
 		return controller.getInfoUsuario(atributo, usuario);
+	}
+	
+	public String getInfoUsuario(String atributo) throws SenhaProtegidaException {
+		return controller.getInfoUsuario(atributo);
+	}
+	
+	public void removeUsuario(String email) throws UsuarioNaoCadastradoException {
+		controller.removeUsuario(email);
 	}
 
 	public void iniciaSistema() {
@@ -50,7 +68,7 @@ public class Facade {
 	}
 
 	public void fechaSistema() throws FechaSistemaException {
-		if (!controller.isUsuarioLogado())
+		if (controller.isUsuarioLogado())
 			throw new FechaSistemaException();
 //		try (BufferedOutputStream arquivoDeGravacao = new BufferedOutputStream(new FileOutputStream(CAMINHO_BACKUP));
 //				ObjectOutputStream objetoDeGravacao = new ObjectOutputStream(arquivoDeGravacao);) {

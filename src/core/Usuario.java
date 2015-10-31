@@ -6,6 +6,7 @@ import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 import exceptions.NomeUsuarioException;
+import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
 import util.ValidaDadosDoUsuario;
 
@@ -92,5 +93,15 @@ public class Usuario {
 
 	private boolean isStringVazia(String string) {
 		return string == null || string.trim().equals("");
+	}
+
+	public String getSenha() {
+		return this.senha;
+	}
+	
+	public void isSenhaCorreta(String senhaDigitada) throws SenhaInvalidaException {
+		if (!this.senha.equals(senhaDigitada)) {
+			throw new SenhaInvalidaException();
+		}
 	}
 }
