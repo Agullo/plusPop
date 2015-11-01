@@ -1,5 +1,8 @@
 package manager;
 
+import exceptions.AtualizaPerfilNaoLogado;
+import exceptions.AtualizacaoDePerfilException;
+
 //import java.io.BufferedOutputStream;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;
@@ -38,6 +41,14 @@ public class Facade {
 	
 	public void logout() throws LogoutException {
 		controller.logout();
+	}
+	
+	public void atualizaPerfil(String atributo, String valor) throws AtualizacaoDePerfilException, AtualizaPerfilNaoLogado {
+		controller.atualizaPerfil(atributo, valor);
+	}
+	
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws AtualizacaoDePerfilException {
+		controller.atualizaPerfil(atributo, valor, velhaSenha);
 	}
 	
 	public String getInfoUsuario(String atributo, String usuario) throws UsuarioNaoCadastradoException, SenhaProtegidaException {

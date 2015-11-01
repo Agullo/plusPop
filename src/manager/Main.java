@@ -10,7 +10,7 @@ public class Main {
 		Facade facade = new Facade();
 		 
 		testes.add("resources/teste_aceitacao/usecase_1.txt");
-//		testes.add("resources/teste_aceitacao/usecase_2.txt");
+		testes.add("resources/teste_aceitacao/usecase_2.txt");
 //		testes.add("resources/teste_aceitacao/usecase_3.txt");
 //		testes.add("resources/teste_aceitacao/usecase_4.txt");
 		 

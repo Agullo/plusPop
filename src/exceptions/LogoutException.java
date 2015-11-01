@@ -4,7 +4,7 @@ public class LogoutException extends Exception {
 
 	private static final long serialVersionUID = 8929572306041805751L;
 	
-	public LogoutException() {
-		super("Nao eh possivel realizar logout. Nenhum usuarix esta logadx no +pop.");
+	public LogoutException(Exception e) {
+		super("Nao eh possivel realizar logout. " + e.getMessage());
 	}
 }

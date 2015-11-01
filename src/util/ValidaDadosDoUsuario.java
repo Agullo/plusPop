@@ -4,15 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.bind.DataBindingException;
-
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 
 public class ValidaDadosDoUsuario {
-	private static final DateTimeFormatter DATA_PATTERN = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static  DateTimeFormatter DATA_PATTERN = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -20,7 +17,11 @@ public class ValidaDadosDoUsuario {
 		if (isFormatoDeDataInvalido(dataNasc))
 			throw new FormatoDeDataInvalidoException();
 		try {
-			LocalDate dataValidada = LocalDate.parse(dataNasc, DATA_PATTERN);
+			LocalDate dataValidada;
+			dataValidada = LocalDate.parse(dataNasc, DATA_PATTERN);
+			String[] dataSeparada = dataNasc.split("/");
+			if (Integer.parseInt(dataSeparada[0]) != dataValidada.getDayOfMonth())
+				throw new DataNaoExisteException();
 			return dataValidada;
 		} catch (Exception e) {
 			throw new DataNaoExisteException();
