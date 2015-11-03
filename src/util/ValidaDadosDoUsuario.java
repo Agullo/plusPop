@@ -8,12 +8,31 @@ import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 
+/**
+ * Classe estática que contém os métodos que validam os dados de data e e-mail
+ * de Usuario.
+ * 
+ * @author matteus
+ *
+ */
 public class ValidaDadosDoUsuario {
-	private static  DateTimeFormatter DATA_PATTERN = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static DateTimeFormatter DATA_PATTERN = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	
-	public static LocalDate validaData(String dataNasc) throws FormatoDeDataInvalidoException, DataNaoExisteException { // Dando errado aqui, só pode!
+
+	/**
+	 * Método que valida a data de nascimento de um usuário.
+	 * 
+	 * @param dataNasc
+	 *            Data a ser validada.
+	 * @return Retorna a data já validada.
+	 * @throws FormatoDeDataInvalidoException
+	 *             Excessão lançada caso a data de entrada não esteja em um
+	 *             formato válido.
+	 * @throws DataNaoExisteException
+	 *             Excessão lançada caso a data de entrada não exista.
+	 */
+	public static LocalDate validaData(String dataNasc) throws FormatoDeDataInvalidoException, DataNaoExisteException {
 		if (isFormatoDeDataInvalido(dataNasc))
 			throw new FormatoDeDataInvalidoException();
 		try {
@@ -27,7 +46,24 @@ public class ValidaDadosDoUsuario {
 			throw new DataNaoExisteException();
 		}
 	}
-	
+
+	/**
+	 * Valida o e-mail de Usuario.
+	 * 
+	 * @param email
+	 *            E-mail a ser validado.
+	 * @throws EmailInvalidoException
+	 *             Excessão lançada caso o e-mail passado como parametro seja
+	 *             inválido.
+	 */
+	public static void validaEmail(String email) throws EmailInvalidoException {
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		if (!matcher.find()) {
+			throw new EmailInvalidoException();
+		}
+	}
+
 	private static boolean isFormatoDeDataInvalido(String data) {
 		String[] dataSeparada = data.split("/");
 		if (dataSeparada[0].length() != 2)
@@ -44,14 +80,6 @@ public class ValidaDadosDoUsuario {
 			return true;
 		}
 		return false;
-	}
-	
-	public static void validaEmail(String email) throws EmailInvalidoException {
-		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		Matcher matcher = pattern.matcher(email);
-		if (!matcher.find()) {
-			throw new EmailInvalidoException();
-		}
 	}
 
 }
