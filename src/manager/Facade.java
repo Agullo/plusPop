@@ -3,9 +3,12 @@ package manager;
 import exceptions.AtualizaPerfilNaoLogado;
 import exceptions.AtualizacaoDePerfilException;
 import exceptions.CadastroDeUsuarioException;
+import exceptions.CriaPostException;
 import exceptions.FechaSistemaException;
+import exceptions.IndiceConteudoPostInvalido;
 import exceptions.LoginException;
 import exceptions.LogoutException;
+import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaProtegidaException;
 import exceptions.UsuarioNaoCadastradoException;
 
@@ -196,5 +199,21 @@ public class Facade {
 	public void fechaSistema() throws FechaSistemaException {
 		if (controller.isUsuarioLogado())
 			throw new FechaSistemaException();
+	}
+	
+	public void criaPost(String mensagem, String data) throws CriaPostException {
+		controller.criaPost(mensagem, data);
+	}
+	
+	public String getPost(int post) throws RequisicaoInvalidaException {
+		return controller.getPost(post);
+	}
+	
+	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
+		return controller.getPost(atributo, post);
+	}
+	
+	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
+		return controller.getConteudoPost(indice, post);
 	}
 }

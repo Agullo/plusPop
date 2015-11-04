@@ -4,23 +4,28 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.Post;
 import core.Usuario;
 import exceptions.AtualizaPerfilNaoLogado;
 import exceptions.AtualizacaoDePerfilException;
 import exceptions.CadastroDeUsuarioException;
+import exceptions.CriaPostException;
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
+import exceptions.IndiceConteudoPostInvalido;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NenhumUsuarioLogadoException;
 import exceptions.NomeUsuarioException;
+import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
 import exceptions.UsuarioJaCadastradoException;
 import exceptions.UsuarioJaLogadoException;
 import exceptions.UsuarioNaoCadastradoException;
+import util.PostFactory;
 
 /**
  * Controller do +Pop. <br>
@@ -227,6 +232,11 @@ public class Controller implements Serializable {
 		Usuario usuarioParaRemover = buscaUsuarioPorEmail(email);
 		usuariosDoMaisPop.remove(usuarioParaRemover);
 	}
+	
+	public void criaPost(String mensagem, String data) throws CriaPostException {
+		Post novoPost = PostFactory.getInstance().criaPost(mensagem, data);
+		usuarioLogado.adicionaPost(novoPost);
+	}
 
 	// Refatoramentos.
 
@@ -243,5 +253,17 @@ public class Controller implements Serializable {
 			if (usuario.getEmail().equals(email))
 				throw new UsuarioJaCadastradoException();
 		}
+	}
+
+	public String getPost(int post) throws RequisicaoInvalidaException {
+		return usuarioLogado.getPost(post);
+	}
+
+	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
+		return usuarioLogado.getPost(atributo, post);
+	}
+
+	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
+		return usuarioLogado.getConteudoPost(indice, post);
 	}
 }

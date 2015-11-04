@@ -1,11 +1,17 @@
 package core;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
+import exceptions.IndiceConteudoPostInvalido;
+import exceptions.IndiceDePostNaoExisteException;
+import exceptions.IndiceMenorQueZeroException;
 import exceptions.NomeUsuarioException;
+import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
@@ -24,6 +30,7 @@ public class Usuario {
 	private String senha;
 	private LocalDate dataNasc;
 	private String imagem;
+	private List<Post> mural;
 
 	/**
 	 * Construtor de Usuario.
@@ -56,6 +63,11 @@ public class Usuario {
 		setSenha(senha);
 		setImagem(imagem);
 		setDataNasc(dataNasc);
+		this.mural = new ArrayList<Post>();
+	}
+	
+	public void adicionaPost(Post post) {
+		mural.add(post);
 	}
 
 	private void setDataNasc(String dataNasc) throws FormatoDeDataInvalidoException, DataNaoExisteException {
@@ -211,5 +223,36 @@ public class Usuario {
 
 	private boolean isStringVazia(String string) {
 		return string == null || string.trim().equals("");
+	}
+
+	public String getPost(int post) throws RequisicaoInvalidaException {
+		if (post < 0)
+			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
+		if (post >= mural.size())
+			throw new RequisicaoInvalidaException(new IndiceDePostNaoExisteException(post));
+		return mural.get(post).toString();
+	}
+
+	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
+		if (post < 0)
+			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
+		if (post >= mural.size())
+			throw new RequisicaoInvalidaException(new IndiceDePostNaoExisteException(post));
+		switch (atributo.toUpperCase()) {
+		case "MENSAGEM":
+			return mural.get(post).passaConteudoPraString();
+		case "DATA":
+			return mural.get(post).getData();
+		case "HASHTAGS":
+			return mural.get(post).getHashtags();
+		default:
+			throw new RequisicaoInvalidaException();
+		}
+	}
+
+	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
+		if (post < 0 || indice < 0)
+			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
+		return mural.get(post).getConteudo(indice);
 	}
 }
