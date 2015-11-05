@@ -8,8 +8,12 @@ import exceptions.FechaSistemaException;
 import exceptions.IndiceConteudoPostInvalido;
 import exceptions.LoginException;
 import exceptions.LogoutException;
+import exceptions.NaoHaNotificacoesException;
+import exceptions.NaoTemAmizadeException;
+import exceptions.NenhumUsuarioLogadoException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaProtegidaException;
+import exceptions.SolicitacaoInexistenteException;
 import exceptions.UsuarioNaoCadastradoException;
 
 /**
@@ -200,20 +204,54 @@ public class Facade {
 		if (controller.isUsuarioLogado())
 			throw new FechaSistemaException();
 	}
-	
+
 	public void criaPost(String mensagem, String data) throws CriaPostException {
 		controller.criaPost(mensagem, data);
 	}
-	
+
 	public String getPost(int post) throws RequisicaoInvalidaException {
 		return controller.getPost(post);
 	}
-	
+
 	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
 		return controller.getPost(atributo, post);
 	}
-	
+
 	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
 		return controller.getConteudoPost(indice, post);
+	}
+
+	public void adicionaAmigo(String usuario) throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException {
+		controller.adicionaAmigo(usuario);
+	}
+
+	public int getNotificacoes() throws NenhumUsuarioLogadoException {
+		return controller.getNotificacoes();
+	}
+
+	public String getNextNotificacao() throws NenhumUsuarioLogadoException, NaoHaNotificacoesException {
+		return controller.getNextNotificacao();
+	}
+
+	public void rejeitaAmizade(String usuario) throws UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
+		controller.rejeitaAmizade(usuario);
+	}
+
+	public int getQtdAmigos() throws NenhumUsuarioLogadoException {
+		return controller.getQtdAmigos();
+	}
+
+	public void aceitaAmizade(String usuario)
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
+		controller.aceitaAmizade(usuario);
+	}
+
+	public void curtirPost(String amigo, int post)
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException {
+		controller.curtirPost(amigo, post);
+	}
+	
+	public void removeAmigo(String usuario) throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
+		controller.removeAmigo(usuario);
 	}
 }

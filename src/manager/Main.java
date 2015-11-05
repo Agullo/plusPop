@@ -12,7 +12,7 @@ public class Main {
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_1.txt");
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_2.txt");
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_3.txt");
-//		testesDeAceitacao.add("resources/teste_aceitacao/usecase_4.txt");
+		testesDeAceitacao.add("resources/teste_aceitacao/usecase_4.txt");
 		 
 		EasyAcceptFacade eaFacade = new EasyAcceptFacade(facade, testesDeAceitacao);
 		eaFacade.executeTests();

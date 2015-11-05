@@ -2,7 +2,9 @@ package core;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
@@ -10,11 +12,14 @@ import exceptions.FormatoDeDataInvalidoException;
 import exceptions.IndiceConteudoPostInvalido;
 import exceptions.IndiceDePostNaoExisteException;
 import exceptions.IndiceMenorQueZeroException;
+import exceptions.NaoHaNotificacoesException;
+import exceptions.NaoTemAmizadeException;
 import exceptions.NomeUsuarioException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
+import exceptions.SolicitacaoInexistenteException;
 import util.ValidaDadosDoUsuario;
 
 /**
@@ -31,6 +36,9 @@ public class Usuario {
 	private LocalDate dataNasc;
 	private String imagem;
 	private List<Post> mural;
+	private List<String> notificacoes;
+	private Set<Usuario> solicitacoesDeAmizade;
+	private Set<Usuario> amigos;
 
 	/**
 	 * Construtor de Usuario.
@@ -63,9 +71,12 @@ public class Usuario {
 		setSenha(senha);
 		setImagem(imagem);
 		setDataNasc(dataNasc);
-		this.mural = new ArrayList<Post>();
+		this.mural = new ArrayList<>();
+		this.notificacoes = new ArrayList<>();
+		this.solicitacoesDeAmizade = new HashSet<>();
+		this.amigos = new HashSet<>();
 	}
-	
+
 	public void adicionaPost(Post post) {
 		mural.add(post);
 	}
@@ -208,6 +219,10 @@ public class Usuario {
 		}
 	}
 
+	public String getNome() {
+		return this.nome;
+	}
+
 	// Refatoramentos:
 
 	private void setEmail(String email) throws EmailInvalidoException {
@@ -254,5 +269,69 @@ public class Usuario {
 		if (post < 0 || indice < 0)
 			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
 		return mural.get(post).getConteudo(indice);
+	}
+
+	public void adicionaSolicitacaoDeAmizade(Usuario usuarioLogado) {
+		solicitacoesDeAmizade.add(usuarioLogado);
+	}
+
+	public void adicionaNotificacao(String novaNotificacao) {
+		notificacoes.add(novaNotificacao);
+	}
+
+	public int getNotificacoes() {
+		return notificacoes.size();
+	}
+
+	public String getNextNotificacao() throws NaoHaNotificacoesException {
+		if (notificacoes.isEmpty())
+			throw new NaoHaNotificacoesException();
+		String notificacao = notificacoes.get(0);
+		notificacoes.remove(0);
+		return notificacao;
+	}
+
+	public void rejeitaAmizade(Usuario usuario) throws SolicitacaoInexistenteException {
+		if (naoTemNotificacaoDe(usuario))
+			throw new SolicitacaoInexistenteException(usuario.getNome());
+		solicitacoesDeAmizade.remove(usuario);
+	}
+
+	private boolean naoTemNotificacaoDe(Usuario usuario) {
+		if (solicitacoesDeAmizade.contains(usuario))
+			return false;
+		return true;
+	}
+
+	public int getQtdAmigos() {
+		return amigos.size();
+	}
+
+	public void aceitaAmizade(Usuario usuario) throws SolicitacaoInexistenteException {
+		if (naoTemNotificacaoDe(usuario))
+			throw new SolicitacaoInexistenteException(usuario.getNome());
+		adicionaAmigo(usuario);
+		solicitacoesDeAmizade.remove(usuario);
+	}
+
+	private void adicionaAmigo(Usuario usuario) {
+		amigos.add(usuario);
+	}
+	
+	public void verificaAmizade(Usuario usuario) throws NaoTemAmizadeException {
+		if (!amigos.contains(usuario))
+			throw new NaoTemAmizadeException(usuario);
+	}
+
+	public Post buscaPost(int post) {
+		return mural.get(post);
+	}
+
+	public void adionaAmigo(Usuario usuario) {
+		amigos.add(usuario);
+	}
+
+	public void removeAmigo(Usuario usuarioParaRemover) {
+		amigos.remove(usuarioParaRemover);
 	}
 }

@@ -16,12 +16,15 @@ import exceptions.FormatoDeDataInvalidoException;
 import exceptions.IndiceConteudoPostInvalido;
 import exceptions.LoginException;
 import exceptions.LogoutException;
+import exceptions.NaoHaNotificacoesException;
+import exceptions.NaoTemAmizadeException;
 import exceptions.NenhumUsuarioLogadoException;
 import exceptions.NomeUsuarioException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
+import exceptions.SolicitacaoInexistenteException;
 import exceptions.UsuarioJaCadastradoException;
 import exceptions.UsuarioJaLogadoException;
 import exceptions.UsuarioNaoCadastradoException;
@@ -232,7 +235,7 @@ public class Controller implements Serializable {
 		Usuario usuarioParaRemover = buscaUsuarioPorEmail(email);
 		usuariosDoMaisPop.remove(usuarioParaRemover);
 	}
-	
+
 	public void criaPost(String mensagem, String data) throws CriaPostException {
 		Post novoPost = PostFactory.getInstance().criaPost(mensagem, data);
 		usuarioLogado.adicionaPost(novoPost);
@@ -265,5 +268,75 @@ public class Controller implements Serializable {
 
 	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
 		return usuarioLogado.getConteudoPost(indice, post);
+	}
+
+	public void adicionaAmigo(String usuario) throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Usuario amigoPendente = buscaUsuarioPorEmail(usuario);
+		String novaNotificacao = usuarioLogado.getNome() + " quer sua amizade.";
+		amigoPendente.adicionaSolicitacaoDeAmizade(usuarioLogado);
+		amigoPendente.adicionaNotificacao(novaNotificacao);
+	}
+
+	public int getNotificacoes() throws NenhumUsuarioLogadoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		return usuarioLogado.getNotificacoes();
+	}
+
+	public String getNextNotificacao() throws NenhumUsuarioLogadoException, NaoHaNotificacoesException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		return usuarioLogado.getNextNotificacao();
+	}
+
+	public void rejeitaAmizade(String usuario) throws UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
+		Usuario usuarioRejeitado = buscaUsuarioPorEmail(usuario);
+		usuarioLogado.rejeitaAmizade(usuarioRejeitado);
+		String notificacao = usuarioLogado.getNome() + " rejeitou sua amizade.";
+		usuarioRejeitado.adicionaNotificacao(notificacao);
+	}
+
+	public int getQtdAmigos() throws NenhumUsuarioLogadoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		return usuarioLogado.getQtdAmigos();
+	}
+
+	public void aceitaAmizade(String usuario)
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Usuario usuarioAceito = buscaUsuarioPorEmail(usuario);
+		usuarioLogado.aceitaAmizade(usuarioAceito);
+		usuarioAceito.adionaAmigo(usuarioLogado);
+		String notificacao = usuarioLogado.getNome() + " aceitou sua amizade.";
+		usuarioAceito.adicionaNotificacao(notificacao);
+	}
+
+	// mudar com usecase 5.
+
+	public void curtirPost(String amigo, int post)
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Usuario usuarioAmigo = buscaUsuarioPorEmail(amigo);
+		usuarioLogado.verificaAmizade(usuarioAmigo);
+		Post postDoAmigo = usuarioAmigo.buscaPost(post);
+		// incrementa popularidade do post.
+		String notificacao = usuarioLogado.getNome() + " curtiu seu post de " + postDoAmigo.getData() + ".";
+		usuarioAmigo.adicionaNotificacao(notificacao);
+	}
+
+	public void removeAmigo(String usuario) throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Usuario usuarioParaRemover = buscaUsuarioPorEmail(usuario);
+		usuarioLogado.verificaAmizade(usuarioParaRemover);
+		usuarioLogado.removeAmigo(usuarioParaRemover);
+		usuarioParaRemover.removeAmigo(usuarioLogado);
+		String notificacao = usuarioLogado.getNome() + " removeu a sua amizade.";
+		usuarioParaRemover.adicionaNotificacao(notificacao);
 	}
 }
