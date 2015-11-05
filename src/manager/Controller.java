@@ -241,23 +241,6 @@ public class Controller implements Serializable {
 		usuarioLogado.adicionaPost(novoPost);
 	}
 
-	// Refatoramentos.
-
-	private Usuario buscaUsuarioPorEmail(String email) throws UsuarioNaoCadastradoException {
-		for (Usuario usuario : usuariosDoMaisPop) {
-			if (usuario.getEmail().equals(email))
-				return usuario;
-		}
-		throw new UsuarioNaoCadastradoException(email);
-	}
-
-	private void isUsuarioJaCadastrado(String email) throws UsuarioJaCadastradoException {
-		for (Usuario usuario : usuariosDoMaisPop) {
-			if (usuario.getEmail().equals(email))
-				throw new UsuarioJaCadastradoException();
-		}
-	}
-
 	public String getPost(int post) throws RequisicaoInvalidaException {
 		return usuarioLogado.getPost(post);
 	}
@@ -338,5 +321,22 @@ public class Controller implements Serializable {
 		usuarioParaRemover.removeAmigo(usuarioLogado);
 		String notificacao = usuarioLogado.getNome() + " removeu a sua amizade.";
 		usuarioParaRemover.adicionaNotificacao(notificacao);
+	}
+	
+	//Refatoramentos
+	
+	private void isUsuarioJaCadastrado(String email) throws UsuarioJaCadastradoException {
+		for (Usuario usuario : usuariosDoMaisPop) {
+			if (usuario.getEmail().equals(email))
+				throw new UsuarioJaCadastradoException();
+		}
+	}
+	
+	private Usuario buscaUsuarioPorEmail(String email) throws UsuarioNaoCadastradoException {
+		for (Usuario usuario : usuariosDoMaisPop) {
+			if (usuario.getEmail().equals(email))
+				return usuario;
+		}
+		throw new UsuarioNaoCadastradoException(email);
 	}
 }
