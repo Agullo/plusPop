@@ -14,8 +14,8 @@ public class Main {
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_3.txt");
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_4.txt");
 		testesDeAceitacao.add("resources/teste_aceitacao/usecase_5.txt");
-//		testesDeAceitacao.add("resources/teste_aceitacao/usecase_6.txt");
-//		testesDeAceitacao.add("resources/teste_aceitacao/usecase_7.txt");
+		testesDeAceitacao.add("resources/teste_aceitacao/usecase_6.txt");
+		testesDeAceitacao.add("resources/teste_aceitacao/usecase_7.txt");
 		 
 		EasyAcceptFacade eaFacade = new EasyAcceptFacade(facade, testesDeAceitacao);
 		eaFacade.executeTests();

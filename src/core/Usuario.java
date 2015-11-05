@@ -15,6 +15,7 @@ import exceptions.IndiceMenorQueZeroException;
 import exceptions.NaoHaNotificacoesException;
 import exceptions.NaoTemAmizadeException;
 import exceptions.NomeUsuarioException;
+import exceptions.PostTalNaoExisteException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
@@ -39,6 +40,8 @@ public class Usuario {
 	private List<String> notificacoes;
 	private Set<Usuario> solicitacoesDeAmizade;
 	private Set<Usuario> amigos;
+	private int popularidade;
+	private TipoDeUsuario tipoDeUsuario;
 
 	/**
 	 * Construtor de Usuario.
@@ -75,6 +78,8 @@ public class Usuario {
 		this.notificacoes = new ArrayList<>();
 		this.solicitacoesDeAmizade = new HashSet<>();
 		this.amigos = new HashSet<>();
+		this.popularidade = 0;
+		this.tipoDeUsuario = new Normal();
 	}
 
 	public void adicionaPost(Post post) {
@@ -323,8 +328,16 @@ public class Usuario {
 			throw new NaoTemAmizadeException(usuario);
 	}
 
-	public Post buscaPost(int post) {
+	public Post buscaPost(int post) throws RequisicaoInvalidaException, PostTalNaoExisteException {
+		if (post < 0)
+			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
+		if (post >= getQuantidadeDePosts())
+			throw new PostTalNaoExisteException(post, this.getQuantidadeDePosts());
 		return mural.get(post);
+	}
+
+	private int getQuantidadeDePosts() {
+		return mural.size();
 	}
 
 	public void adionaAmigo(Usuario usuario) {
@@ -333,5 +346,35 @@ public class Usuario {
 
 	public void removeAmigo(Usuario usuarioParaRemover) {
 		amigos.remove(usuarioParaRemover);
+	}
+	
+	public void curtirPost(Post post, Usuario usuarioAmigo) {
+		tipoDeUsuario.curtirPost(post, usuarioAmigo);
+	}
+	
+	public void rejeitarPost(Post post, Usuario usuarioAmigo) {
+		tipoDeUsuario.rejeitarPost(post, usuarioAmigo);
+	}
+
+	public void adicionaPops(int pops) {
+		popularidade += pops;
+		if (popularidade < 500)
+			tipoDeUsuario = new Normal();
+		else if (popularidade >= 500 && popularidade <= 1000)
+			tipoDeUsuario = new CelebridadePop();
+		else
+			tipoDeUsuario = new IconePop();
+	}
+
+	public String getPopularidade() {
+		return tipoDeUsuario.toString();
+	}
+
+	public int getPops() {
+		return this.popularidade;
+	}
+
+	public void removePops(int valor) {
+		popularidade -= valor;
 	}
 }

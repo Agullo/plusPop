@@ -66,6 +66,10 @@ public class PostFactory {
 	}
 
 	private String[] validaHashtags(String mensagem) throws HashtagException {
+		if (indiceDaPrimeiraHashtag == -1) {
+			String[] vazio = new String[0];
+			return vazio;
+		} 
 		String[] hashTags = mensagem.substring(this.indiceDaPrimeiraHashtag).split(" ");
 		for (String hashTag : hashTags)
 			if (hashTag.trim().equals("") || !hashTag.startsWith("#"))
@@ -74,7 +78,11 @@ public class PostFactory {
 	}
 	
 	private String[] recuperaMidias(String mensagem) {
-		String[] midias = mensagem.substring(indiceDaPrimeiraMidia, indiceDaPrimeiraHashtag).split(" ");
+		String[] midias;
+		if (temHashtag())
+			midias = mensagem.substring(indiceDaPrimeiraMidia, indiceDaPrimeiraHashtag).split(" ");
+		else
+			midias = mensagem.substring(indiceDaPrimeiraMidia, mensagem.length()).split(" ");
 		midias[midias.length - 1] += " ";
 		return midias;
 	}
@@ -91,23 +99,38 @@ public class PostFactory {
 		int indiceDaPrimeiraImagem = mensagem.indexOf("<imagem>");
 		int indiceDoPrimeiroAudio = mensagem.indexOf("<audio>");
 		
-		if(indiceDaPrimeiraImagem != -1 && indiceDoPrimeiroAudio == -1)
-			indiceDaPrimeiraMidia = indiceDaPrimeiraImagem;
-		else if (indiceDaPrimeiraImagem == -1 && indiceDoPrimeiroAudio != -1)
-			indiceDaPrimeiraMidia = indiceDoPrimeiroAudio;
-		else if (indiceDaPrimeiraImagem == -1 && indiceDoPrimeiroAudio == -1)
-			indiceDaPrimeiraMidia = indiceDaPrimeiraHashtag;
-		else {
+		if(temImagemEAudio(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
 			indiceDaPrimeiraMidia = Integer.min(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio);
-		}
+		else if (temSoAudio(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
+			indiceDaPrimeiraMidia = indiceDoPrimeiroAudio;
+		else if (temSoImagem(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
+			indiceDaPrimeiraMidia = indiceDaPrimeiraImagem;
+		else if (temHashtag())
+			indiceDaPrimeiraMidia = indiceDaPrimeiraHashtag;
+		else
+			indiceDaPrimeiraMidia = mensagem.length();
 		
 		return mensagem.substring(0, indiceDaPrimeiraMidia);
 	}
 
+	private boolean temHashtag() {
+		return indiceDaPrimeiraHashtag != -1;
+	}
+
+	private boolean temSoImagem(int indiceDaPrimeiraImagem, int indiceDoPrimeiroAudio) {
+		return indiceDaPrimeiraImagem != -1 && indiceDoPrimeiroAudio == -1;
+	}
+
+	private boolean temSoAudio(int indiceDaPrimeiraImagem, int indiceDoPrimeiroAudio) {
+		return indiceDaPrimeiraImagem == -1 && indiceDoPrimeiroAudio != -1;
+	}
+
+	private boolean temImagemEAudio(int indiceDaPrimeiraImagem, int indiceDoPrimeiroAudio) {
+		return indiceDaPrimeiraImagem != -1 && indiceDoPrimeiroAudio != -1;
+	}
+
 	private int buscaPrimeiraHashTag(String mensagem) {
-		if (mensagem.contains("#"))
-			return mensagem.indexOf("#");
-		return mensagem.length();
+		return mensagem.indexOf("#");
 	}
 	
 	

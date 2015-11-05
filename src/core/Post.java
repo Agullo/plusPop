@@ -1,5 +1,6 @@
 package core;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -11,12 +12,16 @@ public class Post {
 	private List<String> hashTags;
 	private LocalDateTime data;
 	private int popularidade;
+	private int curtidas;
+	private int rejeicoes;
 	
 	public Post(List<String> conteudo, List<String> hashTags, LocalDateTime data) {
 		this.conteudo = conteudo;
 		this.hashTags = hashTags;
 		this.data = data;
 		this.popularidade = 0;
+		this.curtidas = 0;
+		this.rejeicoes = 0;
 	}
 	
 	@Override
@@ -76,5 +81,44 @@ public class Post {
 		if (saida.startsWith("<audio>"))
 			return complementoAudio + saida.substring(7, tamanhoDaSaida - 8);
 		return saida;
+	}
+	
+	public void adicionaCurtida() {curtidas++;}
+	
+	public void adicionaRejeicao() {rejeicoes++;}
+	
+	public void adicionaPopularidade(int valor) {popularidade += valor;}
+	
+	public void removePopularidade(int valor) {popularidade -= valor;}
+
+	public List<String> getListaDeHashtags() {
+		return this.hashTags;
+	}
+
+	public void adicionaHashtag(String novaHashtag) {
+		hashTags.add(novaHashtag);
+	}
+	
+	public boolean isRecente() {
+		LocalDateTime agora = LocalDateTime.now();
+		if (agora.getYear() == this.data.getYear()) {
+			if (agora.getMonth() == this.data.getMonth()) {
+				if (agora.getDayOfMonth() == this.data.getDayOfMonth())
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public int getPopularidade() {
+		return this.popularidade;
+	}
+
+	public int getCurtidas() {
+		return this.curtidas;
+	}
+
+	public int getRejeicoes() {
+		return this.rejeicoes;
 	}
 }

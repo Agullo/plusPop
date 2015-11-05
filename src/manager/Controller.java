@@ -9,6 +9,7 @@ import core.Usuario;
 import exceptions.AtualizaPerfilNaoLogado;
 import exceptions.AtualizacaoDePerfilException;
 import exceptions.CadastroDeUsuarioException;
+import exceptions.ConsultaDePopsException;
 import exceptions.CriaPostException;
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
@@ -20,11 +21,13 @@ import exceptions.NaoHaNotificacoesException;
 import exceptions.NaoTemAmizadeException;
 import exceptions.NenhumUsuarioLogadoException;
 import exceptions.NomeUsuarioException;
+import exceptions.PostTalNaoExisteException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaIncorretaException;
 import exceptions.SenhaInvalidaException;
 import exceptions.SenhaProtegidaException;
 import exceptions.SolicitacaoInexistenteException;
+import exceptions.UsuarioAindaLogadoException;
 import exceptions.UsuarioJaCadastradoException;
 import exceptions.UsuarioJaLogadoException;
 import exceptions.UsuarioNaoCadastradoException;
@@ -298,21 +301,32 @@ public class Controller implements Serializable {
 		usuarioAceito.adicionaNotificacao(notificacao);
 	}
 
-	// mudar com usecase 5.
-
 	public void curtirPost(String amigo, int post)
-			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException {
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
 		if (!isUsuarioLogado())
 			throw new NenhumUsuarioLogadoException();
 		Usuario usuarioAmigo = buscaUsuarioPorEmail(amigo);
 		usuarioLogado.verificaAmizade(usuarioAmigo);
 		Post postDoAmigo = usuarioAmigo.buscaPost(post);
-		// incrementa popularidade do post.
+		usuarioLogado.curtirPost(postDoAmigo, usuarioAmigo);
 		String notificacao = usuarioLogado.getNome() + " curtiu seu post de " + postDoAmigo.getData() + ".";
 		usuarioAmigo.adicionaNotificacao(notificacao);
 	}
 
-	public void removeAmigo(String usuario) throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
+	public void rejeitarPost(String amigo, int post)
+			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Usuario usuarioAmigo = buscaUsuarioPorEmail(amigo);
+		usuarioLogado.verificaAmizade(usuarioAmigo);
+		Post postDoAmigo = usuarioAmigo.buscaPost(post);
+		usuarioLogado.rejeitarPost(postDoAmigo, usuarioAmigo);
+		String notificacao = usuarioLogado.getNome() + " rejeitou sua amizade.";
+		usuarioAmigo.adicionaNotificacao(notificacao);
+	}
+
+	public void removeAmigo(String usuario)
+			throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
 		if (!isUsuarioLogado())
 			throw new NenhumUsuarioLogadoException();
 		Usuario usuarioParaRemover = buscaUsuarioPorEmail(usuario);
@@ -322,21 +336,64 @@ public class Controller implements Serializable {
 		String notificacao = usuarioLogado.getNome() + " removeu a sua amizade.";
 		usuarioParaRemover.adicionaNotificacao(notificacao);
 	}
-	
-	//Refatoramentos
-	
+
 	private void isUsuarioJaCadastrado(String email) throws UsuarioJaCadastradoException {
 		for (Usuario usuario : usuariosDoMaisPop) {
 			if (usuario.getEmail().equals(email))
 				throw new UsuarioJaCadastradoException();
 		}
 	}
-	
+
 	private Usuario buscaUsuarioPorEmail(String email) throws UsuarioNaoCadastradoException {
 		for (Usuario usuario : usuariosDoMaisPop) {
 			if (usuario.getEmail().equals(email))
 				return usuario;
 		}
 		throw new UsuarioNaoCadastradoException(email);
+	}
+
+	public void adicionaPops(int pops) {
+		usuarioLogado.adicionaPops(pops);
+	}
+
+	public String getPopularidade() throws NenhumUsuarioLogadoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		return usuarioLogado.getPopularidade();
+	}
+
+	public int getPopsPost(int indiceDoPost) throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Post post = usuarioLogado.buscaPost(indiceDoPost);
+		return post.getPopularidade();
+	}
+
+	public int qtdCurtidasDePost(int indiceDoPost) throws NenhumUsuarioLogadoException, PostTalNaoExisteException, RequisicaoInvalidaException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Post post = usuarioLogado.buscaPost(indiceDoPost);
+		return post.getCurtidas();
+	}
+
+	public int qtdRejeicoesDePost(int indiceDePost) throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		Post post = usuarioLogado.buscaPost(indiceDePost);
+		return post.getRejeicoes();
+	}
+
+	public int getPopsUsuario(String usuario) throws ConsultaDePopsException, UsuarioNaoCadastradoException {
+		if (isUsuarioLogado())
+			throw new ConsultaDePopsException(new UsuarioAindaLogadoException());
+		Usuario usuarioCorrente = buscaUsuarioPorEmail(usuario);
+		return usuarioCorrente.getPops();
+		
+	}
+
+	public int getPopsUsuario() throws NenhumUsuarioLogadoException {
+		if (!isUsuarioLogado())
+			throw new NenhumUsuarioLogadoException();
+		return usuarioLogado.getPops();
 	}
 }

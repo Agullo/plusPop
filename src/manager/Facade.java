@@ -3,6 +3,7 @@ package manager;
 import exceptions.AtualizaPerfilNaoLogado;
 import exceptions.AtualizacaoDePerfilException;
 import exceptions.CadastroDeUsuarioException;
+import exceptions.ConsultaDePopsException;
 import exceptions.CriaPostException;
 import exceptions.FechaSistemaException;
 import exceptions.IndiceConteudoPostInvalido;
@@ -11,9 +12,11 @@ import exceptions.LogoutException;
 import exceptions.NaoHaNotificacoesException;
 import exceptions.NaoTemAmizadeException;
 import exceptions.NenhumUsuarioLogadoException;
+import exceptions.PostTalNaoExisteException;
 import exceptions.RequisicaoInvalidaException;
 import exceptions.SenhaProtegidaException;
 import exceptions.SolicitacaoInexistenteException;
+import exceptions.UsuarioAindaLogadoException;
 import exceptions.UsuarioNaoCadastradoException;
 
 /**
@@ -202,7 +205,7 @@ public class Facade {
 	 */
 	public void fechaSistema() throws FechaSistemaException {
 		if (controller.isUsuarioLogado())
-			throw new FechaSistemaException();
+			throw new FechaSistemaException(new UsuarioAindaLogadoException());
 	}
 
 	public void criaPost(String mensagem, String data) throws CriaPostException {
@@ -246,12 +249,49 @@ public class Facade {
 		controller.aceitaAmizade(usuario);
 	}
 
-	public void curtirPost(String amigo, int post)
-			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException {
+	public void curtirPost(String amigo, int post) throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException,
+			NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
 		controller.curtirPost(amigo, post);
 	}
-	
-	public void removeAmigo(String usuario) throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
+
+	public void rejeitarPost(String amigo, int post) throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException,
+			NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		controller.rejeitarPost(amigo, post);
+	}
+
+	public void removeAmigo(String usuario)
+			throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
 		controller.removeAmigo(usuario);
+	}
+
+	public void adicionaPops(int pops) {
+		controller.adicionaPops(pops);
+	}
+
+	public String getPopularidade() throws NenhumUsuarioLogadoException {
+		return controller.getPopularidade();
+	}
+
+	public int getPopsPost(int post)
+			throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		return controller.getPopsPost(post);
+	}
+
+	public int qtdCurtidasDePost(int post)
+			throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		return controller.qtdCurtidasDePost(post);
+	}
+
+	public int qtdRejeicoesDePost(int post)
+			throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
+		return controller.qtdRejeicoesDePost(post);
+	}
+
+	public int getPopsUsuario(String usuario) throws ConsultaDePopsException, UsuarioNaoCadastradoException {
+		return controller.getPopsUsuario(usuario);
+	}
+	
+	public int getPopsUsuario() throws NenhumUsuarioLogadoException {
+		return controller.getPopsUsuario();
 	}
 }
