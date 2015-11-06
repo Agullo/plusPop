@@ -2,6 +2,7 @@ package core;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,7 @@ import util.ValidaDadosDoUsuario;
  * @author matteus
  *
  */
-public class Usuario {
+public class Usuario implements Comparable<Usuario> {
 	private static final String IMAGEM_DEFAULT = "resources/default.jpg";
 	private String nome;
 	private String email;
@@ -376,5 +377,32 @@ public class Usuario {
 
 	public void removePops(int valor) {
 		popularidade -= valor;
+	}
+
+	@Override
+	public int compareTo(Usuario outroUsuario) {
+		if (this.getPops() < outroUsuario.getPops())
+			return -1;
+		else if (this.getPops() > outroUsuario.getPops())
+			return 1;
+		else if (this.getPops() == outroUsuario.getPops())
+			if ((this.getEmail().compareToIgnoreCase(outroUsuario.getEmail())) < 0)
+				return -1;
+			else if ((this.getEmail().compareToIgnoreCase(outroUsuario.getEmail())) > 0)
+				return 1;
+		return 0;
+	}
+	
+	@Override
+	public String toString(){
+		return this.nome;
+	}
+	
+	public List<String> getHashtags() {
+		List<String> hashtags = new ArrayList<>();
+		for (Post post : mural) {
+			hashtags.addAll(post.getListaDeHashtags());
+		}
+		return hashtags;
 	}
 }

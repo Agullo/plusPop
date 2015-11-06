@@ -294,4 +294,12 @@ public class Facade {
 	public int getPopsUsuario() throws NenhumUsuarioLogadoException {
 		return controller.getPopsUsuario();
 	}
+	
+	public String atualizaRanking() {
+		return controller.atualizaRanking();
+	}
+	
+	public String atualizaTrendingTopics() {
+		return controller.atualizaTrendingTopics();
+	}
 }

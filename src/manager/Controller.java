@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.Post;
+import core.Ranking;
 import core.Usuario;
 import exceptions.AtualizaPerfilNaoLogado;
 import exceptions.AtualizacaoDePerfilException;
@@ -45,6 +46,7 @@ public class Controller implements Serializable {
 	private static final long serialVersionUID = -5784701982498476044L;
 	private Usuario usuarioLogado;
 	private List<Usuario> usuariosDoMaisPop;
+	private Ranking ranking;
 
 	/**
 	 * Construtor de Controller.
@@ -52,6 +54,7 @@ public class Controller implements Serializable {
 	public Controller() {
 		usuariosDoMaisPop = new ArrayList<Usuario>();
 		usuarioLogado = null;
+		ranking = new Ranking();
 	}
 
 	/**
@@ -395,5 +398,17 @@ public class Controller implements Serializable {
 		if (!isUsuarioLogado())
 			throw new NenhumUsuarioLogadoException();
 		return usuarioLogado.getPops();
+	}
+
+	public String atualizaRanking() {
+		return ranking.retornaRanking(usuariosDoMaisPop);
+	}
+
+	public String atualizaTrendingTopics() {
+		List<String> hashtagsDoMaisPop = new ArrayList<>();
+		for (Usuario usuario : usuariosDoMaisPop) {
+			hashtagsDoMaisPop.addAll(usuario.getHashtags());
+		}
+		return ranking.atualizaTrendingTopics(hashtagsDoMaisPop);
 	}
 }
