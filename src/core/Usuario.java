@@ -357,7 +357,7 @@ public class Usuario implements Comparable<Usuario> {
 		tipoDeUsuario.rejeitarPost(post, usuarioAmigo);
 	}
 
-	public void adicionaPops(int pops) {
+	public void adicionaPops(int pops) { // Usar um singleton para evitar vários objetos criados.
 		popularidade += pops;
 		if (popularidade < 500)
 			tipoDeUsuario = new Normal();

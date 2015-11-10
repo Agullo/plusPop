@@ -53,6 +53,8 @@ public class Ranking {
 	}
 
 	public String atualizaTrendingTopics(List<String> hashtagsDoMaisPop) {
+		List<EntidadeHashtag> entidadesHashtags = new ArrayList<EntidadeHashtag>();
+		
 		Map<String, Integer> mapaDeHastags = new HashMap<>();
 		for (String hashTag : hashtagsDoMaisPop) {
 			if (!mapaDeHastags.containsKey(hashTag))
@@ -61,25 +63,42 @@ public class Ranking {
 				mapaDeHastags.put(hashTag, new Integer (mapaDeHastags.get(hashTag).intValue() + 1));
 		}
 		
-		String[] trendingTopics = new String[3];
-		int[] repeticoes = new int[3];
-		for (String hashtag : mapaDeHastags.keySet()) {
-			int auxiliar = mapaDeHastags.get(hashtag);
-			for (int i = 0; i < repeticoes.length; i++) {
-				if (auxiliar > repeticoes[i]) {
-					repeticoes[i] = auxiliar;
-					trendingTopics[i] = hashtag;
-					break;
-				}
-			}
+		for (String string : mapaDeHastags.keySet()) {
+			EntidadeHashtag hashtag = new EntidadeHashtag(string, mapaDeHastags.get(string));
+			entidadesHashtags.add(hashtag);
 		}
+		
+		Collections.sort(entidadesHashtags);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("Trending Topics:  ");
-		for (int i = 0; i < repeticoes.length; i++) {
-			sb.append("(" + (i+1) + ") " + trendingTopics[i].trim() + ": " + repeticoes[i] + "; ");
+		int counter = 1;
+		for (int i = entidadesHashtags.size() - 1; i > entidadesHashtags.size() - 4; i--) {
+			sb.append("(" + (counter) + ") " + entidadesHashtags.get(i).toString().trim() + ": " + entidadesHashtags.get(i).getFrequencia() + "; ");
+			counter++;
 		}
 		
 		return sb.toString().trim();
+//		
+//		String[] trendingTopics = new String[3];
+//		int[] repeticoes = new int[3];
+//		for (String hashtag : mapaDeHastags.keySet()) {
+//			int auxiliar = mapaDeHastags.get(hashtag);
+//			for (int i = 0; i < repeticoes.length; i++) {
+//				if (auxiliar > repeticoes[i]) {
+//					repeticoes[i] = auxiliar;
+//					trendingTopics[i] = hashtag;
+//					break;
+//				}
+//			}
+//		}
+//		
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("Trending Topics:  ");
+//		for (int i = 0; i < repeticoes.length; i++) {
+//			sb.append("(" + (i+1) + ") " + trendingTopics[i].trim() + ": " + repeticoes[i] + "; ");
+//		}
+//		
+//		return sb.toString().trim();
 	}
 }
