@@ -51,8 +51,8 @@ public class Facade {
 	 * @return Retorna o e-mail do usuário que foi cadastrado.
 	 * @throws CadastroDeUsuarioException
 	 *             Excessão lançada em um dos seguintes casos: nome, e-mail ou
-	 *             data são inválidos, um usuário com o e-mail informado já está
-	 *             cadastrado.
+	 *             data são inválidos, um usuário com o e-mail informado já
+	 *             está cadastrado.
 	 */
 	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws CadastroDeUsuarioException {
@@ -73,8 +73,8 @@ public class Facade {
 	 * @return Retorna o e-mail do usuário que foi cadastrado.
 	 * @throws CadastroDeUsuarioException
 	 *             Excessão lançada em um dos seguintes casos: nome, e-mail ou
-	 *             data são inválidos, um usuário com o e-mail informado já está
-	 *             cadastrado.
+	 *             data são inválidos, um usuário com o e-mail informado já
+	 *             está cadastrado.
 	 */
 	public String cadastraUsuario(String nome, String email, String senha, String dataNasc)
 			throws CadastroDeUsuarioException {
@@ -89,9 +89,9 @@ public class Facade {
 	 * @param senha
 	 *            Senha do usuário que está tentando fazer login.
 	 * @throws LoginException
-	 *             Excessão lançada nos seguintes casos: quando um usuário não
-	 *             está cadastrado, quando a senha é inválida ou quando ele já
-	 *             está logado.
+	 *             Excessão lançada nos seguintes casos: quando um usuário
+	 *             não está cadastrado, quando a senha é inválida ou quando
+	 *             ele já está logado.
 	 */
 	public void login(String email, String senha) throws LoginException {
 		controller.login(email, senha);
@@ -101,7 +101,8 @@ public class Facade {
 	 * Desloga um usuário do sistema.
 	 * 
 	 * @throws LogoutException
-	 *             Excessão lançada quando não há usuário para ser deslogado.
+	 *             Excessão lançada quando não há usuário para ser
+	 *             deslogado.
 	 */
 	public void logout() throws LogoutException {
 		controller.logout();
@@ -111,15 +112,16 @@ public class Facade {
 	 * Atualiza o perfil de um usuário do +Pop.
 	 * 
 	 * @param atributo
-	 *            Variável que determina qual será o atributo de Usuario que vai
-	 *            ser atualizado.
+	 *            Variável que determina qual será o atributo de Usuario que
+	 *            vai ser atualizado.
 	 * @param valor
 	 *            Novo valor do atributo a ser atualizado.
 	 * @throws AtualizacaoDePerfilException
-	 *             Excessão lançada quando o valor não é válido, ou seja, data,
-	 *             nome ou e-mail não são válidos.
+	 *             Excessão lançada quando o valor não é válido, ou seja,
+	 *             data, nome ou e-mail não são válidos.
 	 * @throws AtualizaPerfilNaoLogado
-	 *             Excessão lançada quando nenhum usuário está logado no +Pop.
+	 *             Excessão lançada quando nenhum usuário está logado no
+	 *             +Pop.
 	 */
 	public void atualizaPerfil(String atributo, String valor)
 			throws AtualizacaoDePerfilException, AtualizaPerfilNaoLogado {
@@ -136,8 +138,8 @@ public class Facade {
 	 * @param velhaSenha
 	 *            Senha antiga.
 	 * @throws AtualizacaoDePerfilException
-	 *             Excessão lançada se nenhum usuário estiver logado no +Pop ou
-	 *             se a senha estiver incorreta.
+	 *             Excessão lançada se nenhum usuário estiver logado no +Pop
+	 *             ou se a senha estiver incorreta.
 	 */
 	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws AtualizacaoDePerfilException {
 		controller.atualizaPerfil(atributo, valor, velhaSenha);
@@ -152,8 +154,8 @@ public class Facade {
 	 *            E-mail do usuário que tem a informação.
 	 * @return Retorna o atributo requerido no parametro atributo.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessão lançada quando o e-mail passado como parametro não
-	 *             está cadastrado em nenhum usuário
+	 *             Excessão lançada quando o e-mail passado como parametro
+	 *             não está cadastrado em nenhum usuário
 	 * @throws SenhaProtegidaException
 	 *             Excessão lançada quando se tenta acessar a senha de um
 	 *             usuário, pois a senha é protegida.
@@ -164,8 +166,8 @@ public class Facade {
 	}
 
 	/**
-	 * Método que retorna uma informação específica do usuário que está logado
-	 * no +Pop
+	 * Método que retorna uma informação específica do usuário que está
+	 * logado no +Pop
 	 * 
 	 * @param atributo
 	 *            String que indica qual o atributo que o método deve retornar.
@@ -184,8 +186,8 @@ public class Facade {
 	 * @param email
 	 *            e-mail de cadastro do usuário a ser removido.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessão lançada se não houver usuário cadastrado com esse
-	 *             e-mail.
+	 *             Excessão lançada se não houver usuário cadastrado com
+	 *             esse e-mail.
 	 */
 	public void removeUsuario(String email) throws UsuarioNaoCadastradoException {
 		controller.removeUsuario(email);
@@ -201,7 +203,8 @@ public class Facade {
 	 * Fecha o +Pop.
 	 * 
 	 * @throws FechaSistemaException
-	 *             Excessão lançada quando ainda há um usuário logado no +Pop.
+	 *             Excessão lançada quando ainda há um usuário logado no
+	 *             +Pop.
 	 */
 	public void fechaSistema() throws FechaSistemaException {
 		if (controller.isUsuarioLogado())
@@ -290,15 +293,15 @@ public class Facade {
 	public int getPopsUsuario(String usuario) throws ConsultaDePopsException, UsuarioNaoCadastradoException {
 		return controller.getPopsUsuario(usuario);
 	}
-	
+
 	public int getPopsUsuario() throws NenhumUsuarioLogadoException {
 		return controller.getPopsUsuario();
 	}
-	
+
 	public String atualizaRanking() {
 		return controller.atualizaRanking();
 	}
-	
+
 	public String atualizaTrendingTopics() {
 		return controller.atualizaTrendingTopics();
 	}
