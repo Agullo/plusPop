@@ -15,6 +15,16 @@ public class Post {
 	private int curtidas;
 	private int rejeicoes;
 	
+	/**
+	 * Construtor de Post.
+	 * 
+	 * @param conteudo
+	 *            Tem o texto interno do Post.
+	 * @param hashTags
+	 *            Guarda as hashtags usadas no Post.
+	 * @param data
+	 *            Indica a data que foi feito o Post.
+	 */
 	public Post(List<String> conteudo, List<String> hashTags, LocalDateTime data) {
 		this.conteudo = conteudo;
 		this.hashTags = hashTags;
@@ -25,6 +35,9 @@ public class Post {
 	}
 	
 	@Override
+	/**
+	 * toString da classe Post.
+	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(passaConteudoPraString());
@@ -43,6 +56,11 @@ public class Post {
 		return stringDaData;
 	}
 	
+	/**
+	 * Pega o conteudo do Post e converte para String
+	 * 
+	 * @return o conteudo sem espacos execivos.
+	 */
 	public String passaConteudoPraString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(conteudo.get(0));
@@ -53,6 +71,11 @@ public class Post {
 		return sb.toString().trim();
 	}
 
+	/**
+	 * Pega as hashTags contidas dentro do Post.
+	 * 
+	 * @return toString das hashtags.
+	 */
 	public String getHashtags() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(hashTags.get(0));
@@ -63,12 +86,28 @@ public class Post {
 		return sb.toString();
 	}
 
+	/**
+	 * Pega a data do Post.
+	 * 
+	 * @return A string da Data.
+	 */
 	public String getData() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String stringDaData = data.format(formatter);
 		return stringDaData;
 	}
 
+	/**
+	 * Pega o conteudo do Post.
+	 * 
+	 * @param indice
+	 *            Indice do post.
+	 * @return se comecar com imagem, retorna o complemento da imagem mais a
+	 *         string do post. se comecar com audio, retorna o complemento do
+	 *         audio mais a string do post.
+	 * @throws IndiceConteudoPostInvalido
+	 *             Excessão lancada quando o indice nao existe neste post.
+	 */
 	public String getConteudo(int indice) throws IndiceConteudoPostInvalido {
 		if (indice >= conteudo.size())
 			throw new IndiceConteudoPostInvalido(indice, conteudo.size());
@@ -83,22 +122,57 @@ public class Post {
 		return saida;
 	}
 	
+	/**
+	 * Adiciona curtida no Post.
+	 */
 	public void adicionaCurtida() {curtidas++;}
 	
+	/**
+	 * Adiciona rejeicao no Post.
+	 */
 	public void adicionaRejeicao() {rejeicoes++;}
 	
+	/**
+	 * Adiciona popularidade no Post.
+	 * 
+	 * @param valor
+	 *            Valor a ser adicionado no Post.
+	 */
 	public void adicionaPopularidade(int valor) {popularidade += valor;}
 	
+	/**
+	 * Remove popularidade no Post.
+	 * 
+	 * @param valor
+	 *            Valor a ser removido no Post.
+	 */
 	public void removePopularidade(int valor) {popularidade -= valor;}
 
+	/**
+	 * Lista contendo Hashtags
+	 * 
+	 * @return lista das hashtags.
+	 */
 	public List<String> getListaDeHashtags() {
 		return this.hashTags;
 	}
 
+	/**
+	 * Adiciona uma nova hashtag.
+	 * 
+	 * @param novaHashtag
+	 *            Nova hashtag a ser adicionada
+	 */
 	public void adicionaHashtag(String novaHashtag) {
 		hashTags.add(novaHashtag);
 	}
 	
+	/**
+	 * Metodo para verificar se o Post e recente.
+	 * 
+	 * @return true, se o post e recente
+	 *  	   false, se o post nao e recente.
+	 */
 	public boolean isRecente() {
 		LocalDateTime agora = LocalDateTime.now();
 		if (agora.getYear() == this.data.getYear()) {
@@ -110,14 +184,29 @@ public class Post {
 		return false;
 	}
 
+	/**
+	 * Pega a popularidade do Post.
+	 * 
+	 * @return popularidade
+	 */
 	public int getPopularidade() {
 		return this.popularidade;
 	}
 
+	/**
+	 * Pega as curtidas do Post.
+	 * 
+	 * @return curtidas
+	 */
 	public int getCurtidas() {
 		return this.curtidas;
 	}
 
+	/**
+	 * Pega as rejeicoes do Post.
+	 * 
+	 * @return rejeicoes
+	 */
 	public int getRejeicoes() {
 		return this.rejeicoes;
 	}
