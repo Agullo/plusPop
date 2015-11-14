@@ -58,15 +58,15 @@ public class Usuario implements Comparable<Usuario> {
 	 * @param imagem
 	 *            String contendo o caminho para a imagem de perfil do Usuario
 	 * @throws NomeUsuarioException
-	 *             Excessão lançada quando o parametro nome é inválido.
+	 *             Excessao lancada quando o parametro nome e invalido.
 	 * @throws EmailInvalidoException
-	 *             Excessão lançada quando o parametro e-mail é inválido.
+	 *             Excessao lancada quando o parametro e-mail e invalido.
 	 * @throws DataNaoExisteException
-	 *             Excessão lançada quando a data passada no parametro dataNasc
-	 *             não existe.
+	 *             Excessao lancada quando a data passada no parametro dataNasc
+	 *             nao existe.
 	 * @throws FormatoDeDataInvalidoException
-	 *             Excessão lançada quando o formato do parametro dataNasc é
-	 *             inválido.
+	 *             Excessao lancada quando o formato do parametro dataNasc e
+	 *             invalido.
 	 */
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem) throws NomeUsuarioException,
 			EmailInvalidoException, FormatoDeDataInvalidoException, DataNaoExisteException {
@@ -102,10 +102,10 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	/**
-	 * Atribui uma nova senha para um usuário.
+	 * Atribui uma nova senha para um usuario.
 	 * 
 	 * @param senha
-	 *            Valor a ser atribuio a senha do usuário.
+	 *            Valor a ser atribuio a senha do usuario.
 	 */
 	public void setSenha(String senha) {
 		this.senha = senha;
@@ -118,7 +118,7 @@ public class Usuario implements Comparable<Usuario> {
 	 *            String que indica qual o atributo a retornar.
 	 * @return atributo indicado no parametro atributo.
 	 * @throws SenhaProtegidaException
-	 *             Excessão lançada se o atributo for senha, pois a senha é
+	 *             Excessao lancada se o atributo for senha, pois a senha e
 	 *             protegida.
 	 */
 	public String getInfo(String atributo) throws SenhaProtegidaException {
@@ -146,7 +146,7 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	/**
-	 * Retorna a senha de Usuario sem lançar excessão.
+	 * Retorna a senha de Usuario sem lancar excessao.
 	 * 
 	 * @return Retorna o parametro senha de Usuario.
 	 */
@@ -162,17 +162,17 @@ public class Usuario implements Comparable<Usuario> {
 	 * @param valor
 	 *            Novo valor do atributo selecionado.
 	 * @throws NomeUsuarioException
-	 *             Excessão lançada caso o método tente mudar o nome para um
-	 *             valor inválido.
+	 *             Excessao lancada caso o metodo tente mudar o nome para um
+	 *             valor invalido.
 	 * @throws EmailInvalidoException
-	 *             Excessão lançada caso o método tente mudar o e-mail para um
-	 *             valor inválido.
+	 *             Excessao lancada caso o metodo tente mudar o e-mail para um
+	 *             valor invalido.
 	 * @throws FormatoDeDataInvalidoException
-	 *             Excessão lançada caso o método tente mudar dataNasc para uma
-	 *             data com formato inválido.
+	 *             Excessao lancada caso o metodo tente mudar dataNasc para uma
+	 *             data com formato invalido.
 	 * @throws DataNaoExisteException
-	 *             Excessão lançada caso o método tente mudar dataNasc para uma
-	 *             data que não existe.
+	 *             Excessao lancada caso o metodo tente mudar dataNasc para uma
+	 *             data que nao existe.
 	 */
 	public void setAtributo(String atributo, String valor) throws NomeUsuarioException, EmailInvalidoException,
 			FormatoDeDataInvalidoException, DataNaoExisteException {
@@ -195,12 +195,12 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	/**
-	 * Verifica se a senha digitada é válida.
+	 * Verifica se a senha digitada e valida.
 	 * 
 	 * @param senhaDigitada
 	 *            Senha a ser validada.
 	 * @throws SenhaIncorretaException
-	 *             Excessão lançada caso a senha esteja incorreta.
+	 *             Excessao lancada caso a senha esteja incorreta.
 	 */
 	public void isSenhaCorreta(String senhaDigitada) throws SenhaIncorretaException {
 		if (!this.senha.equals(senhaDigitada)) {
@@ -209,12 +209,12 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	/**
-	 * Verifica se a senha de login é válida.
+	 * Verifica se a senha de login e valida.
 	 * 
 	 * @param senhaDigitada
-	 *            Senha digitada pelo usuário.
+	 *            Senha digitada pelo usuario.
 	 * @throws SenhaInvalidaException
-	 *             Excessão lançada caso a senha não confira com a senha
+	 *             Excessao lancada caso a senha nao confira com a senha
 	 *             validada.
 	 */
 	public void validaSenhaLogin(String senhaDigitada) throws SenhaInvalidaException {
@@ -357,7 +357,7 @@ public class Usuario implements Comparable<Usuario> {
 		tipoDeUsuario.rejeitarPost(post, usuarioAmigo);
 	}
 
-	public void adicionaPops(int pops) { // Usar um singleton para evitar vários objetos criados.
+	public void adicionaPops(int pops) { // Usar um singleton para evitar varios objetos criados.
 		popularidade += pops;
 		if (popularidade < 500)
 			tipoDeUsuario = new Normal();

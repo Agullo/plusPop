@@ -9,7 +9,7 @@ import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;
 
 /**
- * Classe estática que contém os métodos que validam os dados de data e e-mail
+ * Classe estatica que contem os metodos que validam os dados de data e e-mail
  * de Usuario.
  * 
  * @author matteus
@@ -21,16 +21,16 @@ public class ValidaDadosDoUsuario {
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	/**
-	 * Método que valida a data de nascimento de um usuário.
+	 * Metodo que valida a data de nascimento de um usuario.
 	 * 
 	 * @param dataNasc
 	 *            Data a ser validada.
-	 * @return Retorna a data já validada.
+	 * @return Retorna a data ja validada.
 	 * @throws FormatoDeDataInvalidoException
-	 *             Excessão lançada caso a data de entrada não esteja em um
-	 *             formato válido.
+	 *             Excessao lancada caso a data de entrada nao esteja em um
+	 *             formato valido.
 	 * @throws DataNaoExisteException
-	 *             Excessão lançada caso a data de entrada não exista.
+	 *             Excessao lancada caso a data de entrada nao exista.
 	 */
 	public static LocalDate validaData(String dataNasc) throws FormatoDeDataInvalidoException, DataNaoExisteException {
 		if (isFormatoDeDataInvalido(dataNasc))
@@ -53,8 +53,8 @@ public class ValidaDadosDoUsuario {
 	 * @param email
 	 *            E-mail a ser validado.
 	 * @throws EmailInvalidoException
-	 *             Excessão lançada caso o e-mail passado como parametro seja
-	 *             inválido.
+	 *             Excessao lancada caso o e-mail passado como parametro seja
+	 *             invalido.
 	 */
 	public static void validaEmail(String email) throws EmailInvalidoException {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
