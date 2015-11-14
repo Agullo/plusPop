@@ -18,15 +18,35 @@ public class PostFactory {
 	private int indiceDaPrimeiraHashtag;
 	private int indiceDaPrimeiraMidia;
 	
+	/**
+	 * Factory de Post.
+	 * 
+	 * @return cria a factory de post.
+	 */
 	public static PostFactory getInstance() {
 		if (instance == null)
 			instance = new PostFactory();
 		return instance;
 	}
 	
+	/**
+	 * Factory de Post.
+	 */
 	public PostFactory() {
 	}
 	
+	/**
+	 * Metodo que cria Post.
+	 * 
+	 * @param mensagem
+	 *            Mensagem digitada pelo usuario.
+	 * @param stringComData
+	 *            String da data local.
+	 * @return Cria o post.
+	 * 
+	 * @throws CriaPostException
+	 *             Execssao lancada quando nao e possivel criar o post.
+	 */
 	public Post criaPost(String mensagem, String stringComData) throws CriaPostException{
 		try {
 			indiceDaPrimeiraHashtag = buscaPrimeiraHashTag(mensagem); 

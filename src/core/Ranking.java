@@ -10,11 +10,21 @@ public class Ranking {
 	List<Usuario> maisPopulares;
 	List<Usuario> menosPopulares;
 	
+	/**
+	 * Construtor abstrato para o Ranking
+	 */
 	public Ranking() {
 		this.maisPopulares = new ArrayList<>();
 		this.menosPopulares = new ArrayList<>();
 	}
 	
+	/**
+	 * Pega o ranking de usuarios.
+	 * 
+	 * @param todosOsUsuarios
+	 *            Lista dos usuarios do sistema.
+	 * @return toString dos usuarios mais populares e menos populares
+	 */
 	public String retornaRanking(List<Usuario> todosOsUsuarios) {
 		maisPopulares = constroiMaisPopulares(todosOsUsuarios);
 		menosPopulares = constroiMenosPopulares(todosOsUsuarios);
@@ -52,6 +62,13 @@ public class Ranking {
 		return maisPopulares;
 	}
 
+	/**
+	 * Atualiza a lista dos topicos.
+	 * 
+	 * @param hashtagsDoMaisPop
+	 *            lista dos topicos mais falados.
+	 * @return
+	 */
 	public String atualizaTrendingTopics(List<String> hashtagsDoMaisPop) {
 		List<EntidadeHashtag> entidadesHashtags = new ArrayList<EntidadeHashtag>();
 		
