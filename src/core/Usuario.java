@@ -229,6 +229,11 @@ public class Usuario implements Comparable<Usuario> {
 		}
 	}
 
+	/**
+	 * Metodo que retorna o atributo nome de um Usuario.
+	 * 
+	 * @return Retorna atributo nome de Usuario
+	 */
 	public String getNome() {
 		return this.nome;
 	}
@@ -250,6 +255,16 @@ public class Usuario implements Comparable<Usuario> {
 		return string == null || string.trim().equals("");
 	}
 
+	/**
+	 * Metodo que retorna o conteudo de um Post do mural de um Usuario.
+	 * 
+	 * @param post
+	 *            Indice do Post requisitado.
+	 * @return Retorna o toString de um Post.
+	 * @throws RequisicaoInvalidaException
+	 *             Excessao lancada caso nao exista post com o indice passado
+	 *             como parametro ou quando o indice e menor que zero.
+	 */
 	public String getPost(int post) throws RequisicaoInvalidaException {
 		if (post < 0)
 			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
@@ -258,6 +273,19 @@ public class Usuario implements Comparable<Usuario> {
 		return mural.get(post).toString();
 	}
 
+	/**
+	 * Metodo que retorna mensagem, data ou hashtags de um Post de acordo com o
+	 * atributo selecionado.
+	 * 
+	 * @param atributo
+	 *            String que indica qual atributo do Post deve ser retornado
+	 * @param post
+	 *            Inteiro que indica o indice do Post.
+	 * @return Retorna atributo do Post selecionado.
+	 * @throws RequisicaoInvalidaException
+	 *             Excessao lancada caso nao exista post com o indice passado
+	 *             como parametro ou quando o indice e menor que zero.
+	 */
 	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
 		if (post < 0)
 			throw new RequisicaoInvalidaException(new IndiceMenorQueZeroException());
@@ -327,7 +355,7 @@ public class Usuario implements Comparable<Usuario> {
 	private void adicionaAmigo(Usuario usuario) {
 		amigos.add(usuario);
 	}
-	
+
 	public void verificaAmizade(Usuario usuario) throws NaoTemAmizadeException {
 		if (!amigos.contains(usuario))
 			throw new NaoTemAmizadeException(usuario);
@@ -352,16 +380,17 @@ public class Usuario implements Comparable<Usuario> {
 	public void removeAmigo(Usuario usuarioParaRemover) {
 		amigos.remove(usuarioParaRemover);
 	}
-	
+
 	public void curtirPost(Post post, Usuario usuarioAmigo) {
 		tipoDeUsuario.curtirPost(post, usuarioAmigo);
 	}
-	
+
 	public void rejeitarPost(Post post, Usuario usuarioAmigo) {
 		tipoDeUsuario.rejeitarPost(post, usuarioAmigo);
 	}
 
-	public void adicionaPops(int pops) { // Usar um singleton para evitar varios objetos criados.
+	public void adicionaPops(int pops) { // Usar um singleton para evitar varios
+											// objetos criados.
 		popularidade += pops;
 		if (popularidade < 500)
 			tipoDeUsuario = new Normal();
@@ -382,7 +411,7 @@ public class Usuario implements Comparable<Usuario> {
 	public void removePops(int valor) {
 		popularidade -= valor;
 	}
-
+	
 	@Override
 	public int compareTo(Usuario outroUsuario) {
 		if (this.getPops() < outroUsuario.getPops())
@@ -396,12 +425,12 @@ public class Usuario implements Comparable<Usuario> {
 				return 1;
 		return 0;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.nome;
 	}
-	
+
 	public List<String> getHashtags() {
 		List<String> hashtags = new ArrayList<>();
 		for (Post post : mural) {
