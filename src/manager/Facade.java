@@ -150,7 +150,7 @@ public class Facade {
 	 * 
 	 * @param atributo
 	 *            String que indica qual atributo o metodo deve retornar.
-	 * @param email
+	 * @param usuario
 	 *            E-mail do usuario que tem a informacao.
 	 * @return Retorna o atributo requerido no parametro atributo.
 	 * @throws UsuarioNaoCadastradoException

@@ -56,7 +56,7 @@ public class Ranking {
 	 * 
 	 * @param hashtagsDoMaisPop
 	 *            lista dos topicos mais falados.
-	 * @return
+	 * @return String com os treding topics.
 	 */
 	public String atualizaTrendingTopics(List<String> hashtagsDoMaisPop) {
 		List<EntidadeHashtag> entidadesHashtags = new ArrayList<EntidadeHashtag>();
