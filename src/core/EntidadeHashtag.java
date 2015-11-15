@@ -1,5 +1,12 @@
 package core;
 
+/**
+ * Entidade que representa uma hashtag do +Pop. Usada pra facilitar a construcao
+ * dos treding topics do +Pop.
+ * 
+ * @author Matteus Silva
+ *
+ */
 public class EntidadeHashtag implements Comparable<EntidadeHashtag> {
 	private String stringDaHashtag;
 	private int frequencia;
@@ -33,22 +40,23 @@ public class EntidadeHashtag implements Comparable<EntidadeHashtag> {
 		this.frequencia++;
 	}
 
-	@Override
 	/**
 	 * toString da Hashtag.
 	 */
+	@Override
 	public String toString() {
 		return this.stringDaHashtag;
 	}
 
-	@Override
 	/**
-	 * compareTo de Hashtag.
-	 * Compara a frequencia de uma hashtag com um outra.
+	 * compareTo de Hashtag. Compara a frequencia de uma hashtag com um outra.
+	 * Caso a frequencia seja a mesma, compara pela ordem alfabetica ignorando
+	 * se e caixa alta ou nao.
 	 * 
-	 * @param outraHashtag 
-	 * 			Uma segunda hashTag para ser comparada.
+	 * @param outraHashtag
+	 *            Uma segunda hashTag para ser comparada.
 	 */
+	@Override
 	public int compareTo(EntidadeHashtag outraHashtag) {
 		if (this.getFrequencia() != outraHashtag.getFrequencia()) {
 			return this.getFrequencia() - outraHashtag.getFrequencia();

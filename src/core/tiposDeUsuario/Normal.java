@@ -1,5 +1,13 @@
-package core;
+package core.tiposDeUsuario;
 
+import core.Post;
+import core.Usuario;
+
+/**
+ * Entidade que implementa TipoDeUsuario.
+ * @author Matteus Silva
+ *
+ */
 public class Normal implements TipoDeUsuario {
 	private static final int VALOR_POPULARIDADE = 10;
 

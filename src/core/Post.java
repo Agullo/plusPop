@@ -7,6 +7,11 @@ import java.util.List;
 
 import exceptions.IndiceConteudoPostInvalido;
 
+/**
+ * Classe que representa um post de um Usuario do +Pop.
+ * @author Matteus Silva
+ *
+ */
 public class Post {
 	private List<String> conteudo;
 	private List<String> hashTags;

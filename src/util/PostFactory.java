@@ -13,28 +13,34 @@ import exceptions.CriaPostException;
 import exceptions.HashtagException;
 import exceptions.TamanhoDaMensagemException;
 
+/**
+ * Entidade responsavel pela criacao de Posts do +Pop.
+ * @author Matteus Silva
+ *
+ */
 public class PostFactory {
 	private static PostFactory instance;
 	private int indiceDaPrimeiraHashtag;
 	private int indiceDaPrimeiraMidia;
-	
+
 	/**
 	 * Factory de Post.
 	 * 
-	 * @return cria a factory de post.
+	 * @return Retorna uma instacia da classe, obedecendo ao Design Parttern
+	 *         Singleton.
 	 */
 	public static PostFactory getInstance() {
 		if (instance == null)
 			instance = new PostFactory();
 		return instance;
 	}
-	
+
 	/**
-	 * Factory de Post.
+	 * Construtor de PostFactory.
 	 */
 	public PostFactory() {
 	}
-	
+
 	/**
 	 * Metodo que cria Post.
 	 * 
@@ -46,10 +52,12 @@ public class PostFactory {
 	 * 
 	 * @throws CriaPostException
 	 *             Execssao lancada quando nao e possivel criar o post.
+	 *             Pode ser lancada quando o  tamanho da mensagem do post e invalido
+	 *             ou quando ha uma hashtag que nao comeca com o caractere #.
 	 */
-	public Post criaPost(String mensagem, String stringComData) throws CriaPostException{
+	public Post criaPost(String mensagem, String stringComData) throws CriaPostException {
 		try {
-			indiceDaPrimeiraHashtag = buscaPrimeiraHashTag(mensagem); 
+			indiceDaPrimeiraHashtag = buscaPrimeiraHashTag(mensagem);
 			String textoDaMensagem = recuperaTextoValidado(mensagem);
 			String[] midias = recuperaMidias(mensagem);
 			String[] hashTagsvalidadas = validaHashtags(mensagem);
@@ -61,9 +69,9 @@ public class PostFactory {
 			throw new CriaPostException(e);
 		}
 	}
-	
-	//refatoramentos.
-	
+
+	// refatoramentos.
+
 	private LocalDateTime criaDataDoPost(String stringComData) {
 		DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate data = LocalDate.parse(stringComData.substring(0, 10), formatterData);
@@ -89,14 +97,14 @@ public class PostFactory {
 		if (indiceDaPrimeiraHashtag == -1) {
 			String[] vazio = new String[0];
 			return vazio;
-		} 
+		}
 		String[] hashTags = mensagem.substring(this.indiceDaPrimeiraHashtag).split(" ");
 		for (String hashTag : hashTags)
 			if (hashTag.trim().equals("") || !hashTag.startsWith("#"))
 				throw new HashtagException(hashTag);
 		return hashTags;
 	}
-	
+
 	private String[] recuperaMidias(String mensagem) {
 		String[] midias;
 		if (temHashtag())
@@ -111,15 +119,15 @@ public class PostFactory {
 		String textoParaValidar = getTextoParaValidar(mensagem);
 		if (textoParaValidar.length() > 200)
 			throw new TamanhoDaMensagemException();
-		
+
 		return textoParaValidar;
 	}
-	
+
 	private String getTextoParaValidar(String mensagem) {
 		int indiceDaPrimeiraImagem = mensagem.indexOf("<imagem>");
 		int indiceDoPrimeiroAudio = mensagem.indexOf("<audio>");
-		
-		if(temImagemEAudio(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
+
+		if (temImagemEAudio(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
 			indiceDaPrimeiraMidia = Integer.min(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio);
 		else if (temSoAudio(indiceDaPrimeiraImagem, indiceDoPrimeiroAudio))
 			indiceDaPrimeiraMidia = indiceDoPrimeiroAudio;
@@ -129,7 +137,7 @@ public class PostFactory {
 			indiceDaPrimeiraMidia = indiceDaPrimeiraHashtag;
 		else
 			indiceDaPrimeiraMidia = mensagem.length();
-		
+
 		return mensagem.substring(0, indiceDaPrimeiraMidia);
 	}
 
@@ -152,6 +160,5 @@ public class PostFactory {
 	private int buscaPrimeiraHashTag(String mensagem) {
 		return mensagem.indexOf("#");
 	}
-	
-	
+
 }

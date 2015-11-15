@@ -7,6 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import core.tiposDeUsuario.CelebridadePop;
+import core.tiposDeUsuario.IconePop;
+import core.tiposDeUsuario.Normal;
+import core.tiposDeUsuario.TipoDeUsuario;
 import exceptions.DataNaoExisteException;
 import exceptions.EmailInvalidoException;
 import exceptions.FormatoDeDataInvalidoException;

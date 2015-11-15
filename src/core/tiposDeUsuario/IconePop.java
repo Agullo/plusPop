@@ -1,5 +1,13 @@
-package core;
+package core.tiposDeUsuario;
 
+import core.Post;
+import core.Usuario;
+
+/**
+ * Entidade que implementa TipoDeUsuario.
+ * @author Matteus Silva
+ *
+ */
 public class IconePop implements TipoDeUsuario {
 	private static final String EPICWIN = "#epicwin";
 	private static final String EPICFAIL = "#epicfail";
