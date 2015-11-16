@@ -53,8 +53,7 @@ public class ValidaDadosDoUsuario {
 	 * @param email
 	 *            E-mail a ser validado.
 	 * @throws EmailInvalidoException
-	 *             Excessao lancada caso o e-mail passado como parametro seja
-	 *             invalido.
+	 *             Excessao lancada caso o formato de email passado como parametro seja invalido.
 	 */
 	public static void validaEmail(String email) throws EmailInvalidoException {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);

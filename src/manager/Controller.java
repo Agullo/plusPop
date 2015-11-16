@@ -191,7 +191,7 @@ public class Controller implements Serializable {
 	 * @return Retorna o atributo requerido no parametro atributo.
 	 * @throws UsuarioNaoCadastradoException
 	 *             Excessao lancada quando o e-mail passado como parametro nao
-	 *             esta cadastrado em nenhum usuario
+	 *             esta cadastrado em nenhum usuario.
 	 * @throws SenhaProtegidaException
 	 *             Excessao lancada quando se tenta acessar a senha de um
 	 *             usuario, pois a senha e protegida.
@@ -234,8 +234,8 @@ public class Controller implements Serializable {
 	 * @param email
 	 *            e-mail de cadastro do usuario a ser removido.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada se nao houver usuario cadastrado com esse
-	 *             e-mail.
+	 *             Excessao lancada quando o e-mail passado como parametro nao
+	 *             esta cadastrado em nenhum usuario.
 	 */
 	public void removeUsuario(String email) throws UsuarioNaoCadastradoException {
 		Usuario usuarioParaRemover = buscaUsuarioPorEmail(email);
@@ -250,7 +250,9 @@ public class Controller implements Serializable {
 	 * @param data
 	 *            Data do post.
 	 * @throws CriaPostException
-	 *             Excessao lancada quando nao e possivel criar o Post.
+	 *             Execssao lancada quando nao e possivel criar o post.
+	 *             Pode ser lancada quando o  tamanho da mensagem do post e invalido
+	 *             ou quando ha uma hashtag que nao comeca com o caractere #.
 	 */
 	public void criaPost(String mensagem, String data) throws CriaPostException {
 		Post novoPost = PostFactory.getInstance().criaPost(mensagem, data);
@@ -265,7 +267,7 @@ public class Controller implements Serializable {
 	 * @return retorna o Post do usuario.
 	 * 
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao e invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 */
 	public String getPost(int post) throws RequisicaoInvalidaException {
 		return usuarioLogado.getPost(post);
@@ -281,7 +283,7 @@ public class Controller implements Serializable {
 	 * @return retorna o Post do usuario.
 	 * 
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao e invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 */
 	public String getPost(String atributo, int post) throws RequisicaoInvalidaException {
 		return usuarioLogado.getPost(atributo, post);
@@ -298,9 +300,9 @@ public class Controller implements Serializable {
 	 * @return Retorna o conteudo do Post.
 	 * 
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao e invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 * @throws IndiceConteudoPostInvalido
-	 *             Excessao lancada quando o indice do post e invalido
+	 *             Excessao lancada quando o indice do post e invalido ou nao existe neste post.
 	 */
 	public String getConteudoPost(int indice, int post) throws RequisicaoInvalidaException, IndiceConteudoPostInvalido {
 		return usuarioLogado.getConteudoPost(indice, post);
@@ -311,9 +313,10 @@ public class Controller implements Serializable {
 	 * @param usuario
 	 *            Amigo que voce deseja adicionar.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nao ha usuario logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *             Excessao lancada quando o e-mail passado como parametro nao
+	 *             esta cadastrado em nenhum usuario.
 	 */
 	public void adicionaAmigo(String usuario) throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException {
 		if (!isUsuarioLogado())
@@ -330,7 +333,7 @@ public class Controller implements Serializable {
 	 * @return Notificacoes do usuario logado.
 	 * 
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 */
 	public int getNotificacoes() throws NenhumUsuarioLogadoException {
 		if (!isUsuarioLogado())
@@ -344,9 +347,9 @@ public class Controller implements Serializable {
 	 * @return Retorna as proximas notificacoes do usuario logado.
 	 * 
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws NaoHaNotificacoesException
-	 *             Excessao lancada quando nao ha notificacoes a serem exibidas.
+	 *             Excessao lancada quando nao ha mais notificacoes a serem exibidas.
 	 */
 	public String getNextNotificacao() throws NenhumUsuarioLogadoException, NaoHaNotificacoesException {
 		if (!isUsuarioLogado())
@@ -360,9 +363,10 @@ public class Controller implements Serializable {
 	 * @param usuario
 	 *            Usuario que sera rejeitado.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *             Excessao lancada quando o e-mail passado como parametro nao
+	 *             esta cadastrado em nenhum usuario.
 	 * @throws SolicitacaoInexistenteException
-	 *             Excessao lancada quando nao existe solicitacao.
+	 *             Excessao lancada quando nao existe solicitacao de amizade feita por outro usuario.
 	 */
 	public void rejeitaAmizade(String usuario) throws UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
 		Usuario usuarioRejeitado = buscaUsuarioPorEmail(usuario);
@@ -376,7 +380,7 @@ public class Controller implements Serializable {
 	 * 
 	 * @return Retorna a quantidade de amigos do usuario logado.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 */
 	public int getQtdAmigos() throws NenhumUsuarioLogadoException {
 		if (!isUsuarioLogado())
@@ -390,11 +394,12 @@ public class Controller implements Serializable {
 	 * @param usuario
 	 *            Usuario a ser aceitado.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *             Excessao lancada quando o e-mail passado como parametro nao
+	 *             esta cadastrado em nenhum usuario.
 	 * @throws SolicitacaoInexistenteException
-	 *             Excessao lancada quando nao existe solicitacao.
+	 *             Excessao lancada quando nao existe solicitacao de amizade feita por outro usuario.
 	 */
 	public void aceitaAmizade(String usuario)
 			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, SolicitacaoInexistenteException {
@@ -415,15 +420,16 @@ public class Controller implements Serializable {
 	 * @param post
 	 *            Post a ser curtido.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *             Excessao lancada quando o e-mail passado como parametro nao
+	 *             esta cadastrado em nenhum usuario.
 	 * @throws NaoTemAmizadeException
 	 *             Excessao lancada quando nao existe amizade entre os usuarios.
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao nao e valida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 * @throws PostTalNaoExisteException
-	 *             Excessao lancada quando o post nao existe.
+	 *             Excessao lancada quando o post deste usuario nao existe.
 	 */
 	public void curtirPost(String amigo, int post)
 			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
@@ -445,15 +451,16 @@ public class Controller implements Serializable {
 	 * @param post
 	 *            Post a ser rejeitado.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *              Excessao lancada quando o e-mail passado como parametro nao
+	 *              esta cadastrado em nenhum usuario.
 	 * @throws NaoTemAmizadeException
 	 *             Excessao lancada quando nao existe amizade entre os usuarios.
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao nao é valida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 * @throws PostTalNaoExisteException
-	 *             Excessao lancada quando o post nao existe.
+	 *             Excessao lancada quando o post deste usuario nao existe.
 	 */
 	public void rejeitarPost(String amigo, int post)
 			throws NenhumUsuarioLogadoException, UsuarioNaoCadastradoException, NaoTemAmizadeException, RequisicaoInvalidaException, PostTalNaoExisteException {
@@ -473,11 +480,12 @@ public class Controller implements Serializable {
 	 * @param usuario
 	 *            Usuario a ser removido.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando o usuario nao esta cadastrado.
+	 *              Excessao lancada quando o e-mail passado como parametro nao
+	 *              esta cadastrado em nenhum usuario.
 	 * @throws NaoTemAmizadeException
 	 *             Excessao lancada quando nao existe amizade entre os usuarios.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario nao esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 */
 	public void removeAmigo(String usuario)
 			throws UsuarioNaoCadastradoException, NaoTemAmizadeException, NenhumUsuarioLogadoException {
@@ -521,7 +529,7 @@ public class Controller implements Serializable {
 	 * 
 	 * @return retorna a popularidade do usuario logado.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario nao esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 */
 	public String getPopularidade() throws NenhumUsuarioLogadoException {
 		if (!isUsuarioLogado())
@@ -537,11 +545,11 @@ public class Controller implements Serializable {
 	 * @return Retorna a popularidade do post.
 	 * 
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao é invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 * @throws PostTalNaoExisteException
-	 *             Excessao lancada quando o post nao existe.
+	 *             Excessao lancada quando o post deste usuario nao existe.
 	 */
 	public int getPopsPost(int indiceDoPost) throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
 		if (!isUsuarioLogado())
@@ -558,11 +566,11 @@ public class Controller implements Serializable {
 	 * @return Retorna a quantidade de curtidas daquele post.
 	 * 
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws PostTalNaoExisteException
-	 *             Excessao lancada quando o post nao existe.
+	 *             Excessao lancada quando o post deste usuario nao existe.
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao é invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 */
 	public int qtdCurtidasDePost(int indiceDoPost) throws NenhumUsuarioLogadoException, PostTalNaoExisteException, RequisicaoInvalidaException {
 		if (!isUsuarioLogado())
@@ -579,11 +587,11 @@ public class Controller implements Serializable {
 	 * @return Retorna a quantidade de rejeicoes daquele post.
 	 * 
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 * @throws RequisicaoInvalidaException
-	 *             Excessao lancada quando a requisicao é invalida.
+	 *             Excessao lancada quando a requisicao feita pelo usuario logado e invalida.
 	 * @throws PostTalNaoExisteException
-	 *             Excessao lancada quando o post nao existe.
+	 *             Excessao lancada quando o post deste usuario nao existe.
 	 */
 	public int qtdRejeicoesDePost(int indiceDePost) throws NenhumUsuarioLogadoException, RequisicaoInvalidaException, PostTalNaoExisteException {
 		if (!isUsuarioLogado())
@@ -600,9 +608,10 @@ public class Controller implements Serializable {
 	 * @return Retorna os pops do usuario.
 	 * 
 	 * @throws ConsultaDePopsException
-	 *             Excessao lancada quando da erro na consulta de pops.
+	 *             Excessao lancada quando tem um  erro na consulta de pops.
 	 * @throws UsuarioNaoCadastradoException
-	 *             Excessao lancada quando usuario nao esta cadastrado.
+	 *              Excessao lancada quando o e-mail passado como parametro nao
+	 *              esta cadastrado em nenhum usuario.
 	 */
 	public int getPopsUsuario(String usuario) throws ConsultaDePopsException, UsuarioNaoCadastradoException {
 		if (isUsuarioLogado())
@@ -617,7 +626,7 @@ public class Controller implements Serializable {
 	 * 
 	 * @return pops do usuario logado.
 	 * @throws NenhumUsuarioLogadoException
-	 *             Excessao lancada quando nenhum usuario esta logado.
+	 *             Excessao lancada quando nao ha nenhum usuario logado no sistema +Pop.
 	 */
 	public int getPopsUsuario() throws NenhumUsuarioLogadoException {
 		if (!isUsuarioLogado())

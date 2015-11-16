@@ -17,7 +17,7 @@ public class IconePop implements TipoDeUsuario {
 	/**
 	 * Curte um Post atravez do usuario e
 	 * Adiciona popularidade  e pops.
-	 * E se o Post for recente ele ira adicionar BONUS.
+	 * E se o Post for recente ele ira adicionar BONUS de 50 pops.
 	 * 
 	 * @param post
 	 * 			Indica o Post a ser curtido.
@@ -37,7 +37,7 @@ public class IconePop implements TipoDeUsuario {
 	/**
 	 * Rejeita um Post atravez do usuario e
 	 * Remove popularidade  e pops.
-	 * E se o Post for recente ele ira remover BONUS.
+	 * E se o Post for recente ele ira remover BONUS de 50 pops.
 	 * 
 	 * @param post
 	 * 			Indica o Post a ser curtido.
